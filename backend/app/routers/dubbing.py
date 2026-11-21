@@ -203,18 +203,20 @@ def _run_dubbing(job_id: str, media_path: Path, is_video_input: bool,
                 fixed_voice = resolve_voice(fixed_voice_id)
             result_paths: dict[str, str] = {}
             for tgt in targets:
-                if tgt == source_lang:
-                    raise ValueError(
-                        f"Idioma destino igual al origen: {tgt}."
-                    )
                 # B2: la etapa es "synthesize" (la que espera el
                 # frontend), no "synthesize-{tgt}".
                 store.update_job(job_id, stage="synthesize",
                                  progress=0.5)
                 seg_rows = []
                 for i, seg in enumerate(segments):
-                    translated = manager.translate(
-                        seg["text"], source_lang, tgt
+                    # Mismo idioma que el origen: no hay nada que
+                    # traducir; el trabajo es re-sonorizar con la
+                    # voz elegida (p. ej. clonar la original).
+                    translated = (
+                        seg["text"] if tgt == source_lang
+                        else manager.translate(
+                            seg["text"], source_lang, tgt
+                        )
                     )
                     seg_rows.append({
                         "start_ms": int(seg["start"] * 1000),
