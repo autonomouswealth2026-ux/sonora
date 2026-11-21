@@ -13,9 +13,9 @@ const SonoraPantallas = (() => {
 
   /* ---------- validación de audio ---------- */
   function validarArchivoAudio(file, minS, maxS, maxMB) {
-    const tipos = ['audio/wav', 'audio/mpeg', 'audio/flac', 'audio/ogg', 'audio/x-wav', 'audio/mp4', 'audio/webm'];
-    const extOk = /\.(wav|mp3|flac|ogg|webm)$/i.test(file.name || '');
-    if (!tipos.includes(file.type) && !extOk) return 'Formato no soportado. Usa WAV, MP3, FLAC, OGG o WebM.';
+    const tipos = ['audio/wav', 'audio/mpeg', 'audio/flac', 'audio/ogg', 'audio/x-wav', 'audio/mp4', 'audio/x-m4a', 'audio/aac', 'audio/webm'];
+    const extOk = /\.(wav|mp3|flac|ogg|webm|m4a|aac)$/i.test(file.name || '');
+    if (!tipos.includes(file.type) && !extOk) return 'Formato no soportado. Usa WAV, MP3, FLAC, OGG, WebM, M4A o AAC.';
     if (file.size > maxMB * 1024 * 1024) return 'El archivo supera los ' + maxMB + ' MB.';
     return null;
   }
@@ -72,7 +72,7 @@ const SonoraPantallas = (() => {
     if (errFormato) { errEl.textContent = errFormato; errEl.hidden = false; muestraAudio = null; validarClonar(); return; }
     const dur = await duracionDeAudio(file);
     if (!dur) {
-      errEl.textContent = 'No se pudo leer la duración de este audio. Sube un WAV o MP3 válido (la grabación WebM también vale).';
+      errEl.textContent = 'No se pudo leer la duración de este audio. Sube un WAV, MP3, M4A o AAC válido (la grabación WebM también vale).';
       errEl.hidden = false;
       muestraAudio = null;
       validarClonar();
