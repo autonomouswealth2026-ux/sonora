@@ -566,6 +566,14 @@ const SonoraApp = (() => {
     $('btn-cerrar-menu-mas').addEventListener('click', () => { cerrarDialogo('menu-mas'); $('btn-mas').setAttribute('aria-expanded', 'false'); });
     $('menu-mas').addEventListener('click', (e) => { if (e.target === $('menu-mas')) cerrarDialogo('menu-mas'); });
     document.querySelectorAll('#menu-mas .nav-item').forEach((a) => a.addEventListener('click', () => cerrarDialogo('menu-mas')));
+    // Los enlaces de navegación dentro de un diálogo (p. ej. "Abrir
+    // Ajustes" en el detalle del backend) deben cerrar el diálogo: si
+    // no, el diálogo queda tapando la pantalla a la que se navega y
+    // parece que el enlace no hace nada.
+    document.querySelectorAll('.dialogo-fondo a[href^="#/"]').forEach((a) => a.addEventListener('click', () => {
+      const fondo = a.closest('.dialogo-fondo');
+      if (fondo) cerrarDialogo(fondo.id);
+    }));
 
     $('dialogo-confirmar').addEventListener('click', (e) => { if (e.target === $('dialogo-confirmar')) $('btn-confirmar-cancelar').click(); });
     document.addEventListener('keydown', (e) => {
