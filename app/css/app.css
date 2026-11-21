@@ -25,6 +25,12 @@
 }
 
 *, *::before, *::after { box-sizing: border-box; }
+/* El atributo `hidden` lo usa todo el JS para mostrar/ocultar (diálogos,
+   pantallas, toast, banner). Sin esta regla, cualquier clase con `display`
+   (p. ej. `.dialogo-fondo { display: flex }`) pisa el `display: none` del
+   navegador y el elemento queda visible siempre: el diálogo Backend se
+   veía abierto al cargar y ni ✕, ni Escape, ni "Abrir Ajustes" lo cerraban. */
+[hidden] { display: none !important; }
 html { -webkit-text-size-adjust: 100%; }
 body {
   margin: 0; background: var(--bg); color: var(--text);
