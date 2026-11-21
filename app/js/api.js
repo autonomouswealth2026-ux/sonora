@@ -10,7 +10,12 @@ const SonoraApi = (() => {
   }
   function configurado() { return Boolean(baseUrl()); }
   function headers(extra) {
-    const h = { ...(extra || {}) };
+    // ngrok (plan gratis) muestra una página de aviso en la primera
+    // visita si falta esta cabecera; con ella responde JSON directo.
+    // El backend ya la permite en CORS (main.py allow_headers), así
+    // que no rompe el preflight. Vale también sin ngrok: el resto
+    // de túneles la ignoran.
+    const h = { 'ngrok-skip-browser-warning': 'true', ...(extra || {}) };
     const s = SonoraStore.leerAjustes();
     if (s.token) h.Authorization = 'Bearer ' + s.token;
     return h;
