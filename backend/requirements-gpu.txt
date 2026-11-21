@@ -1,0 +1,22 @@
+# Dependencias GPU (Kaggle, 2x T4 16 GB). Incluye la base.
+# torch NO se fija aquí: Kaggle ya trae torch+CUDA instalado. Si falta,
+# instalarlo aparte con el índice CUDA de PyTorch, p. ej.:
+#   pip install torch --index-url https://download.pytorch.org/whl/cu124
+# flash-attn es opcional (acelera Qwen3-TTS); compila desde fuente,
+# puede tardar: descomentar solo si hace falta.
+-r requirements.txt
+qwen-tts==0.1.1
+kokoro==0.9.4
+faster-whisper==1.2.1
+# av FIJADO a 13.1.0: faster-whisper 1.2.1 llama a av.open(...,
+# metadata_errors="ignore") y av>=14 eliminó ese argumento: con
+# av 19.x, /stt, /align y /verify dan 500 (VERIFICACION.md §5-B1).
+av==13.1.0
+# qwen-tts==0.1.1 exige transformers>=4.57.3 y accelerate>=1.12.0
+# (verificado en PyPI 2026-11-20): con 4.48.3/1.4.0 pip no resuelve.
+transformers==4.57.3
+accelerate==1.12.0
+diffusers==0.33.1
+demucs==4.0.1
+sentencepiece==0.2.0
+# flash-attn==2.7.4 --no-build-isolation  # opcional, compilación lenta

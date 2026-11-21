@@ -1,0 +1,11 @@
+.env
+.env.local
+data/
+models/
+__pycache__/
+*.pyc
+.venv/
+venv/
+*.log
+server.log
+cloudflared.log

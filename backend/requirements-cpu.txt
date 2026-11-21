@@ -1,0 +1,11 @@
+# Dependencias solo CPU (InstaBox, 4 vCPU, 8 GB RAM).
+# Solo Kokoro (narración, voces fijas) + Whisper small (STT ligero).
+# Sin Qwen3-TTS, sin Demucs, sin Stable Audio: necesitan GPU.
+# Instalar PRIMERO torch CPU (si no, pip trae el wheel con CUDA, ~800 MB):
+#   pip install torch --index-url https://download.pytorch.org/whl/cpu
+-r requirements.txt
+kokoro==0.9.4
+faster-whisper==1.2.1
+# av FIJADO a 13.1.0: faster-whisper 1.2.1 exige av<14; con av>=14
+# /stt, /align y /verify dan 500 (VERIFICACION.md §5-B1).
+av==13.1.0

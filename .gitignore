@@ -1,0 +1,18 @@
+# Sonora — .gitignore
+__pycache__/
+*.py[cod]
+.pytest_cache/
+*.egg-info/
+.env
+.env.*
+!.env.example
+backend/data/
+backend/*.db
+backend/*.sqlite3
+*.wav
+*.mp3
+*.ogg
+*.webm
+.venv/
+venv/
+.DS_Store

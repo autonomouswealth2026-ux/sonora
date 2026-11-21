@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Sonora — Tu voz, en tus manos. Taller privado de voces: texto a voz, clonación, voz a voz, doblaje y efectos de sonido.">
+<meta name="theme-color" content="#0B0D10">
+<title>Sonora — Tu voz, en tus manos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Schibsted+Grotesk:wght@600;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./css/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230B0D10'/%3E%3Crect x='6' y='12' width='3' height='8' rx='1.5' fill='%23FACC15'/%3E%3Crect x='11.5' y='8' width='3' height='16' rx='1.5' fill='%23FACC15'/%3E%3Crect x='17' y='11' width='3' height='10' rx='1.5' fill='%23FACC15'/%3E%3Crect x='22.5' y='14' width='3' height='4' rx='1.5' fill='%23FACC15'/%3E%3C/svg%3E">
+</head>
+<body>
+<a class="skip-link" href="#vista">Saltar al contenido</a>
+
+<header class="cabecera">
+  <a class="marca" href="#/estudio" aria-label="Sonora, ir al Estudio">
+    <span class="marca-nombre">Sonora<span class="marca-punto" aria-hidden="true">.</span></span>
+    <span class="marca-eslogan">Tu voz, en tus manos</span>
+  </a>
+  <div class="cabecera-acciones">
+    <button id="estado-backend" class="estado-backend" type="button" aria-live="polite" aria-label="Estado del backend. Tocar para ver el detalle.">
+      <span class="estado-punto" aria-hidden="true"></span>
+      <span id="estado-backend-texto">Sin configurar</span>
+    </button>
+    <button id="btn-mas" class="btn btn-fantasma btn-icono" type="button" aria-label="Más pantallas" aria-haspopup="true" aria-expanded="false">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="5" cy="12" r="1.6" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.6" fill="currentColor" stroke="none"/><circle cx="19" cy="12" r="1.6" fill="currentColor" stroke="none"/></svg>
+    </button>
+    <a class="btn btn-fantasma btn-icono" href="#/ajustes" aria-label="Ajustes">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h.01a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h.01a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v.01a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+    </a>
+  </div>
+</header>
+
+<div id="banner-backend" class="banner banner-info" role="status" hidden>
+  <div class="banner-texto">
+    <strong>Backend sin conexión.</strong>
+    <span id="banner-backend-detalle">Solo funcionan el historial local y los ajustes. Arranca el notebook de Kaggle y pega la URL en Ajustes.</span>
+  </div>
+  <div class="banner-acciones">
+    <a class="btn btn-secundario btn-pequeno" href="#/ajustes">Abrir Ajustes</a>
+    <button id="btn-reintentar-backend" class="btn btn-fantasma btn-pequeno" type="button">Reintentar</button>
+  </div>
+</div>
+
+<div class="layout">
+  <nav class="sidebar" aria-label="Navegación principal">
+    <a class="nav-item" href="#/estudio" data-ruta="estudio"><span class="nav-icono" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v1a7 7 0 0 1-14 0v-1M12 18v4"/></svg></span>Estudio</a>
+    <a class="nav-item" href="#/voces" data-ruta="voces"><span class="nav-icono" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>Voice Lab</a>
+    <a class="nav-item" href="#/voz-a-voz" data-ruta="voz-a-voz"><span class="nav-icono" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 2.1l4 4-4 4"/><path d="M3 12v-2a4 4 0 0 1 4-4h12.6M7 21.9l-4-4 4-4"/><path d="M21 12v2a4 4 0 0 1-4 4H4.4"/></svg></span>Voz a voz</a>
+    <a class="nav-item" href="#/doblaje" data-ruta="doblaje"><span class="nav-icono" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M7 4v16M17 4v16M2 9h5M2 15h5M17 9h5M17 15h5"/></svg></span>Doblaje</a>
+    <a class="nav-item" href="#/efectos" data-ruta="efectos"><span class="nav-icono" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></span>Efectos</a>
+    <a class="nav-item" href="#/historial" data-ruta="historial"><span class="nav-icono" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5M12 7v5l4 2"/></svg></span>Historial</a>
+    <a class="nav-item" href="#/ajustes" data-ruta="ajustes"><span class="nav-icono" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h.01a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h.01a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v.01a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></span>Ajustes</a>
+  </nav>
+
+  <main id="vista" class="vista" tabindex="-1">
+    <!-- Estudio -->
+    <section id="pantalla-estudio" class="pantalla" aria-labelledby="titulo-estudio">
+      <h1 id="titulo-estudio">Estudio</h1>
+      <p class="intro">Escribe, elige una voz y escucha. Tres pasos: voz, texto y generar.</p>
+      <div class="tablero tablero-estudio">
+        <div class="baldosa">
+          <h2><span class="paso" aria-hidden="true">1</span> Voz</h2>
+          <div id="voz-actual" class="voz-actual" aria-live="polite">
+            <span class="avatar" id="voz-actual-avatar" aria-hidden="true">E</span>
+            <span class="voz-actual-texto"><strong id="voz-actual-nombre">ef_dora</strong><span id="voz-actual-meta" class="muted">Fija · Kokoro-82M · es</span></span>
+          </div>
+          <button id="btn-cambiar-voz" class="btn btn-secundario" type="button" aria-haspopup="dialog">Cambiar voz</button>
+          <label class="campo">
+            <span class="campo-etiqueta">Modelo</span>
+            <select id="sel-modelo" class="input">
+              <option value="kokoro">Kokoro-82M — rápido, CPU</option>
+              <option value="qwen3-tts-1.7b" selected>Qwen3-TTS 1.7B — clonación, GPU</option>
+              <option value="qwen3-tts-0.6b">Qwen3-TTS 0.6B — ligero, GPU</option>
+              <option value="qwen3-tts-1.7b-customvoice">Qwen3-TTS CustomVoice — 9 voces fijas, GPU</option>
+            </select>
+          </label>
+          <p id="ayuda-modelo" class="ayuda">Qwen3-TTS 1.7B clona con 3 s de muestra y habla español nativo. Necesita GPU.</p>
+        </div>
+        <div class="baldosa">
+          <h2><span class="paso" aria-hidden="true">2</span> Texto</h2>
+          <label class="campo">
+            <span class="campo-etiqueta">Texto a convertir en voz</span>
+            <textarea id="texto-tts" class="input textarea-estudio" rows="7" placeholder="Escribe o pega aquí el texto que quieres escuchar…">Hola, este es el primer texto de Sonora. Escribe, elige una voz y escucha cómo suena.</textarea>
+          </label>
+          <p class="contador"><span id="contador-texto">0 / 10.000 caracteres</span><span id="aviso-largo" class="aviso" hidden>Texto largo: se generará por bloques.</span></p>
+          <p id="error-texto" class="error-campo" role="alert" hidden></p>
+          <div class="fila-botones">
+            <button id="btn-pegar" class="btn btn-fantasma" type="button">Pegar</button>
+            <button id="btn-limpiar-texto" class="btn btn-fantasma" type="button">Limpiar</button>
+            <button id="btn-ejemplo" class="btn btn-fantasma" type="button">Ejemplo</button>
+          </div>
+        </div>
+        <div class="baldosa">
+          <h2><span class="paso" aria-hidden="true">3</span> Ajustes y generar</h2>
+          <div class="slider-grupo">
+            <label for="slider-estabilidad">Estabilidad <output id="valor-estabilidad" for="slider-estabilidad">0,50</output></label>
+            <input id="slider-estabilidad" type="range" min="0" max="1" step="0.05" value="0.5" aria-describedby="ayuda-estabilidad">
+            <p id="ayuda-estabilidad" class="ayuda">0,50 — voz consistente, menos expresiva.</p>
+          </div>
+          <div class="slider-grupo">
+            <label for="slider-similitud">Similitud <output id="valor-similitud" for="slider-similitud">0,75</output></label>
+            <input id="slider-similitud" type="range" min="0" max="1" step="0.05" value="0.75" aria-describedby="ayuda-similitud">
+            <p id="ayuda-similitud" class="ayuda">0,75 — parecido a la voz de referencia.</p>
+          </div>
+          <div class="slider-grupo">
+            <label for="slider-velocidad">Velocidad <output id="valor-velocidad" for="slider-velocidad">1,00</output></label>
+            <input id="slider-velocidad" type="range" min="0.5" max="2" step="0.05" value="1" aria-describedby="ayuda-velocidad">
+            <p id="ayuda-velocidad" class="ayuda">1,00 — ritmo normal.</p>
+          </div>
+          <div class="slider-grupo">
+            <label for="slider-estilo">Estilo <output id="valor-estilo" for="slider-estilo">0,00</output></label>
+            <input id="slider-estilo" type="range" min="0" max="1" step="0.05" value="0" aria-describedby="ayuda-estilo">
+            <p id="ayuda-estilo" class="ayuda">0,00 — sin exageración. Solo Qwen3-TTS CustomVoice.</p>
+          </div>
+          <label class="campo">
+            <span class="campo-etiqueta">Formato de descarga</span>
+            <select id="sel-formato" class="input"><option value="mp3" selected>MP3</option><option value="wav">WAV</option></select>
+          </label>
+          <button id="btn-generar" class="btn btn-primario btn-grande" type="button" data-necesita="gpu">Generar</button>
+          <p id="motivo-generar" class="motivo" role="status" hidden></p>
+          <p id="progreso-generar" class="progreso" role="status" aria-live="polite" hidden></p>
+          <div class="barra-progreso" id="barra-progreso" hidden><span id="barra-progreso-relleno"></span></div>
+        </div>
+        <div class="baldosa baldosa-resultado" id="baldosa-resultado">
+          <h2>Resultado</h2>
+          <div id="resultado-vacio" class="vacio">
+            <svg class="onda-decorativa" viewBox="0 0 200 48" aria-hidden="true"><path d="M4 24h8l4-12 6 24 6-32 6 28 5-16 6 8 6-4 6 10 6-20 6 24 5-12 6 6 6-8 6 14 6-22 6 18 5-6 6 4 6-10 6 16 6-8" fill="none" stroke="#39424E" stroke-width="2" stroke-linecap="round"/></svg>
+            <p>Aún no hay audio. Genera tu primer texto y aparecerá aquí.</p>
+          </div>
+          <div id="resultado-audio" hidden></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Voice Lab -->
+    <section id="pantalla-voces" class="pantalla" aria-labelledby="titulo-voces" hidden>
+      <h1 id="titulo-voces">Voice Lab</h1>
+      <p class="intro">Clona una voz desde una muestra o diseña una nueva desde texto. Solo se clonan voces propias o con permiso explícito.</p>
+      <div class="pestanas" role="tablist" aria-label="Crear una voz">
+        <button id="pestana-clonar" class="pestana activa" type="button" role="tab" aria-selected="true" aria-controls="panel-clonar">Clonar desde audio</button>
+        <button id="pestana-disenar" class="pestana" type="button" role="tab" aria-selected="false" aria-controls="panel-disenar">Diseñar desde texto</button>
+      </div>
+      <div class="tablero">
+        <div id="panel-clonar" class="baldosa" role="tabpanel" aria-labelledby="pestana-clonar">
+          <h2>Clonar una voz</h2>
+          <label class="campo"><span class="campo-etiqueta">Nombre de la voz</span>
+            <input id="nombre-voz" class="input" type="text" maxlength="80" placeholder="Mi voz — Carlos" autocomplete="off">
+          </label>
+          <div id="zona-soltar" class="zona-soltar" tabindex="0" role="button" aria-label="Soltar un archivo de audio o pulsar para examinar">
+            <p><strong>Suelta tu audio aquí</strong></p>
+            <p class="muted">o</p>
+            <button id="btn-examinar" class="btn btn-secundario" type="button">Examinar</button>
+            <p class="ayuda">WAV, MP3, FLAC, OGG o WebM (grabación) · 3 s – 2 min · máx. 25 MB · una sola voz, sin música</p>
+            <input id="input-muestra" type="file" accept="audio/wav,audio/mpeg,audio/flac,audio/ogg,audio/webm,.wav,.mp3,.flac,.ogg,.webm" hidden>
+          </div>
+          <p id="info-muestra" class="info-muestra" role="status" hidden></p>
+          <p id="error-muestra" class="error-campo" role="alert" hidden></p>
+          <div class="fila-botones">
+            <button id="btn-grabar" class="btn btn-secundario" type="button" data-necesita="microfono">Grabar muestra</button>
+            <span id="tiempo-grabacion" class="tiempo-grabacion" aria-live="polite" hidden>0:00</span>
+          </div>
+          <label class="campo"><span class="campo-etiqueta">Idioma de la muestra</span>
+            <select id="sel-idioma-muestra" class="input"><option value="es" selected>Español</option><option value="en">Inglés</option></select>
+          </label>
+          <label class="check"><input id="check-consentimiento" type="checkbox"> <span>Confirmo que esta voz es mía o tengo permiso para clonarla.</span></label>
+          <button id="btn-clonar" class="btn btn-primario btn-grande" type="button" data-necesita="gpu" disabled>Clonar voz</button>
+          <p id="motivo-clonar" class="motivo" role="status">Marca el consentimiento y añade una muestra válida para clonar.</p>
+          <div id="muestra-prueba" hidden></div>
+        </div>
+        <div id="panel-disenar" class="baldosa" role="tabpanel" aria-labelledby="pestana-disenar" hidden>
+          <h2>Diseñar una voz</h2>
+          <label class="campo"><span class="campo-etiqueta">Describe la voz (20–1.000 caracteres)</span>
+            <textarea id="prompt-diseno" class="input" rows="4" maxlength="1000" placeholder="Voz femenina, unos 30 años, acento neutro, cálida y pausada…"></textarea>
+          </label>
+          <p class="contador"><span id="contador-diseno">0 / 1.000 caracteres</span></p>
+          <p id="error-diseno" class="error-campo" role="alert" hidden></p>
+          <button id="btn-disenar" class="btn btn-primario btn-grande" type="button" data-necesita="gpu">Generar 3 muestras</button>
+          <p id="motivo-disenar" class="motivo" role="status" hidden></p>
+          <div id="candidatas-diseno"></div>
+        </div>
+      </div>
+      <div class="baldosa">
+        <div class="fila-titulo">
+          <h2>Mis voces (<span id="contador-voces">0</span>)</h2>
+          <label class="campo campo-buscar"><span class="solo-lectores">Buscar voces</span>
+            <input id="buscar-voces" class="input" type="search" placeholder="Buscar voces…" aria-label="Buscar voces">
+          </label>
+        </div>
+        <div id="lista-voces" class="lista-voces"></div>
+        <div id="voces-vacio" class="vacio">
+          <p>Aún no tienes voces clonadas ni diseñadas. Las voces fijas de Kokoro están en el Estudio.</p>
+          <p class="ayuda">Español limitado a 3 voces fijas: ef_dora, em_alex y em_santa.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Voz a voz -->
+    <section id="pantalla-voz-a-voz" class="pantalla" aria-labelledby="titulo-voz-a-voz" hidden>
+      <h1 id="titulo-voz-a-voz">Voz a voz</h1>
+      <p class="intro">Sube o graba tu voz y escúchala en otra voz, manteniendo tu interpretación.</p>
+      <div class="tablero">
+        <div class="baldosa">
+          <label class="campo"><span class="campo-etiqueta">Voz de destino</span>
+            <select id="sel-voz-destino" class="input"></select>
+          </label>
+          <label class="campo"><span class="campo-etiqueta">Método</span>
+            <select id="sel-metodo-sts" class="input">
+              <option value="voice-conversion">Conversión de voz — no implementada todavía (501)</option>
+              <option value="stt-tts" selected>Texto a voz — pierde la interpretación, solo queda el texto</option>
+            </select>
+          </label>
+          <p class="ayuda">La conversión de voz no es en tiempo real en una T4: un audio de varios minutos tarda varios minutos.</p>
+          <div id="zona-soltar-sts" class="zona-soltar" tabindex="0" role="button" aria-label="Soltar un archivo de audio o pulsar para examinar">
+            <p><strong>Suelta el audio aquí</strong></p>
+            <p class="muted">o</p>
+            <button id="btn-examinar-sts" class="btn btn-secundario" type="button">Examinar</button>
+            <p class="ayuda">WAV o MP3 · máx. 10 min</p>
+            <input id="input-sts" type="file" accept="audio/wav,audio/mpeg,audio/webm,.wav,.mp3,.webm" hidden>
+          </div>
+          <p id="info-sts" class="info-muestra" role="status" hidden></p>
+          <p id="error-sts" class="error-campo" role="alert" hidden></p>
+          <button id="btn-convertir" class="btn btn-primario btn-grande" type="button" data-necesita="gpu">Convertir</button>
+          <p id="motivo-sts" class="motivo" role="status" hidden></p>
+          <div id="resultado-sts"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Doblaje -->
+    <section id="pantalla-doblaje" class="pantalla" aria-labelledby="titulo-doblaje" hidden>
+      <h1 id="titulo-doblaje">Doblaje</h1>
+      <p class="intro">Traduce y re-dobla un audio o vídeo a otro idioma con la voz original. Sin sincronización labial.</p>
+      <div class="tablero">
+        <div class="baldosa">
+          <label class="campo"><span class="campo-etiqueta">Medio</span>
+            <input id="input-doblaje" class="input" type="file" accept="audio/*,video/*">
+          </label>
+          <p class="ayuda">Audio o vídeo · máx. 500 MB en este clon · máx. 180 min (límite real de ElevenLabs en disputa: 1–3 GB según la fuente)</p>
+          <div class="fila-dos">
+            <label class="campo"><span class="campo-etiqueta">Idioma de origen</span>
+              <select id="sel-origen-doblaje" class="input"><option value="auto" selected>Automático</option><option value="es">Español</option><option value="en">Inglés</option></select>
+            </label>
+            <label class="campo"><span class="campo-etiqueta">Idioma de destino</span>
+              <select id="sel-destino-doblaje" class="input"><option value="en" selected>Inglés</option><option value="es">Español</option></select>
+            </label>
+          </div>
+          <label class="campo"><span class="campo-etiqueta">Voz</span>
+            <select id="sel-voz-doblaje" class="input"><option value="clone-original" selected>Clonar la original</option></select>
+          </label>
+          <label class="check"><input id="check-fondo" type="checkbox" checked> <span>Mantener el audio de fondo</span></label>
+          <button id="btn-doblaje" class="btn btn-primario btn-grande" type="button" data-necesita="gpu">Empezar doblaje</button>
+          <p id="motivo-doblaje" class="motivo" role="status" hidden></p>
+        </div>
+        <div class="baldosa" id="baldosa-trabajo-doblaje">
+          <h2>Trabajo en curso</h2>
+          <div id="doblaje-vacio" class="vacio"><p>Aún no hay ningún doblaje en curso.</p></div>
+          <div id="doblaje-progreso" hidden>
+            <ol class="etapas" id="etapas-doblaje">
+              <li data-etapa="transcribe">Transcribir</li>
+              <li data-etapa="translate">Traducir</li>
+              <li data-etapa="synthesize">Sintetizar</li>
+              <li data-etapa="mix">Mezclar</li>
+            </ol>
+            <div class="barra-progreso" id="barra-doblaje"><span id="barra-doblaje-relleno"></span></div>
+            <p id="texto-progreso-doblaje" class="progreso" role="status" aria-live="polite"></p>
+            <div id="segmentos-doblaje" class="segmentos"></div>
+            <button id="btn-descargar-doblaje" class="btn btn-secundario" type="button" hidden>Descargar vídeo doblado</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Efectos -->
+    <section id="pantalla-efectos" class="pantalla" aria-labelledby="titulo-efectos" hidden>
+      <h1 id="titulo-efectos">Efectos de sonido</h1>
+      <p class="intro">Efectos y ambientes. Sin voces ni música estructurada.</p>
+      <div class="tablero">
+        <div class="baldosa">
+          <label class="campo"><span class="campo-etiqueta">Describe el sonido</span>
+            <textarea id="texto-sfx" class="input" rows="3" maxlength="500" placeholder="Puerta de madera que chirría, lluvia de fondo…"></textarea>
+          </label>
+          <div class="slider-grupo">
+            <label for="slider-duracion-sfx">Duración <output id="valor-duracion-sfx" for="slider-duracion-sfx">10 s</output></label>
+            <input id="slider-duracion-sfx" type="range" min="1" max="47" step="1" value="10">
+            <p class="ayuda">De 1 a 47 segundos.</p>
+          </div>
+          <label class="campo"><span class="campo-etiqueta">Variantes</span>
+            <select id="sel-variantes-sfx" class="input"><option value="1" selected>1</option><option value="2">2</option><option value="3">3</option></select>
+          </label>
+          <button id="btn-sfx" class="btn btn-primario btn-grande" type="button" data-necesita="gpu">Generar efecto</button>
+          <p id="motivo-sfx" class="motivo" role="status" hidden></p>
+          <p class="ayuda">Sugerencias: Lluvia · Calle · Puerta · Multitud · Viento · Trueno · Pasos · Campanas</p>
+          <div id="resultados-sfx" class="resultados-sfx"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Historial -->
+    <section id="pantalla-historial" class="pantalla" aria-labelledby="titulo-historial" hidden>
+      <h1 id="titulo-historial">Historial</h1>
+      <p class="intro">Todo lo que generas queda guardado en este dispositivo. Los audios se reproducen y descargan siempre, también sin backend.</p>
+      <div class="baldosa">
+        <div class="fila-filtros">
+          <label class="campo campo-buscar"><span class="solo-lectores">Buscar en el historial</span>
+            <input id="buscar-historial" class="input" type="search" placeholder="Buscar por texto…" aria-label="Buscar en el historial">
+          </label>
+          <label class="campo"><span class="solo-lectores">Filtrar por tipo</span>
+            <select id="filtro-tipo" class="input" aria-label="Filtrar por tipo"><option value="">Todos los tipos</option><option value="tts">Texto a voz</option><option value="sfx">Efecto</option><option value="sts">Voz a voz</option><option value="dubbing">Doblaje</option></select>
+          </label>
+        </div>
+        <p id="contador-uso" class="contador-uso" role="status">Este mes: 0 caracteres · 0 min de audio</p>
+        <div id="lista-historial" class="lista-historial"></div>
+        <div id="historial-vacio" class="vacio">
+          <p>Aún no has generado nada — escribe tu primer texto en el Estudio.</p>
+          <a class="btn btn-primario" href="#/estudio">Ir al Estudio</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Ajustes -->
+    <section id="pantalla-ajustes" class="pantalla" aria-labelledby="titulo-ajustes" hidden>
+      <h1 id="titulo-ajustes">Ajustes</h1>
+      <p class="intro">La conexión con el backend vive solo en este dispositivo. Nunca se sube al repositorio.</p>
+      <div class="tablero">
+        <div class="baldosa">
+          <h2>Backend</h2>
+          <label class="campo"><span class="campo-etiqueta">URL del backend</span>
+            <input id="input-backend-url" class="input" type="url" inputmode="url" placeholder="https://xxxx.trycloudflare.com" autocomplete="off" spellcheck="false">
+            <span class="ayuda">La URL del túnel de Kaggle cambia en cada sesión. Pégala aquí cada vez que arranques el notebook.</span>
+          </label>
+          <div class="fila-botones">
+            <button id="btn-probar" class="btn btn-secundario" type="button">Probar conexión</button>
+            <button id="btn-guardar-backend" class="btn btn-primario" type="button">Guardar</button>
+          </div>
+          <p id="resultado-probar" class="progreso" role="status" aria-live="polite" hidden></p>
+          <label class="campo"><span class="campo-etiqueta">Token (opcional)</span>
+            <input id="input-token" class="input" type="password" placeholder="Token del backend, si lo tiene" autocomplete="off">
+            <span class="ayuda">Se guarda solo en este dispositivo.</span>
+          </label>
+          <button id="btn-mostrar-token" class="btn btn-fantasma" type="button" aria-pressed="false">Mostrar token</button>
+        </div>
+        <div class="baldosa">
+          <h2>Audio</h2>
+          <label class="campo"><span class="campo-etiqueta">Formato por defecto</span>
+            <select id="sel-formato-defecto" class="input"><option value="mp3" selected>MP3</option><option value="wav">WAV</option></select>
+          </label>
+          <label class="campo"><span class="campo-etiqueta">Velocidad de reproducción</span>
+            <select id="sel-velocidad-repro" class="input"><option value="0.5">0,5×</option><option value="0.75">0,75×</option><option value="1" selected>1,0×</option><option value="1.25">1,25×</option><option value="1.5">1,5×</option><option value="2">2×</option></select>
+          </label>
+          <label class="check"><input id="check-normalizar" type="checkbox" checked> <span>Normalizar a -16 LUFS</span></label>
+        </div>
+        <div class="baldosa">
+          <h2>Voces y datos</h2>
+          <h3 class="subtitulo">Diccionario de pronunciación</h3>
+          <div class="fila-dos">
+            <label class="campo"><span class="campo-etiqueta">Palabra</span><input id="dic-palabra" class="input" type="text" placeholder="Valdestudio"></label>
+            <label class="campo"><span class="campo-etiqueta">Cómo debe sonar</span><input id="dic-reemplazo" class="input" type="text" placeholder="bal-des-TU-dio"></label>
+          </div>
+          <div class="fila-botones">
+            <button id="btn-dic-anadir" class="btn btn-secundario" type="button">Añadir regla</button>
+            <button id="btn-dic-exportar" class="btn btn-fantasma" type="button">Exportar (.pls)</button>
+          </div>
+          <ul id="lista-diccionario" class="lista-simple"></ul>
+          <p id="error-diccionario" class="error-campo" role="alert" hidden></p>
+          <div class="fila-botones fila-botones-col">
+            <button id="btn-exportar" class="btn btn-secundario" type="button">Exportar mis voces e historial</button>
+            <button id="btn-borrar-todo" class="btn btn-peligro" type="button">Borrar todos mis datos</button>
+          </div>
+        </div>
+        <div class="baldosa">
+          <h2>Acerca de</h2>
+          <p><strong>Sonora v0.1</strong> — «Tu voz, en tus manos.»</p>
+          <p class="muted">Sistema de diseño de referencia: elevenlabs.io, adaptado y optimizado.</p>
+          <p class="muted">Modelos: Kokoro-82M · Qwen3-TTS 1.7B · ZONOS3-Mini (retador, solo si pasa la escucha A/B). VoxCPM2 no está integrado.</p>
+          <p class="muted">Presupuesto cero: sin cuentas de pago, sin telemetría. Tus voces y tu historial viven solo en este dispositivo.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<!-- Reproductor fijo -->
+<div id="reproductor" class="reproductor" hidden>
+  <div class="reproductor-onda">
+    <canvas id="onda" width="600" height="56" aria-hidden="true"></canvas>
+    <p id="reproductor-meta" class="reproductor-meta" role="status">Sin audio</p>
+  </div>
+  <div class="reproductor-controles">
+    <button id="btn-play" class="btn btn-icono btn-play" type="button" aria-label="Reproducir">▸</button>
+    <span id="tiempo-audio" class="tiempo-audio">0:00 / 0:00</span>
+    <label class="campo campo-velocidad"><span class="solo-lectores">Velocidad de reproducción</span>
+      <select id="sel-velocidad-player" class="input input-compacto" aria-label="Velocidad de reproducción">
+        <option value="0.5">0,5×</option><option value="0.75">0,75×</option><option value="1" selected>1×</option><option value="1.25">1,25×</option><option value="1.5">1,5×</option><option value="2">2×</option>
+      </select>
+    </label>
+    <button id="btn-descargar-audio" class="btn btn-secundario btn-pequeno" type="button">Descargar</button>
+    <button id="btn-cerrar-reproductor" class="btn btn-fantasma btn-icono" type="button" aria-label="Cerrar reproductor">✕</button>
+  </div>
+  <audio id="elemento-audio" preload="metadata"></audio>
+</div>
+
+<!-- Selector de voz (diálogo) -->
+<div id="dialogo-voz" class="dialogo-fondo" hidden>
+  <div class="dialogo" role="dialog" aria-modal="true" aria-labelledby="titulo-dialogo-voz">
+    <div class="dialogo-cabecera">
+      <h2 id="titulo-dialogo-voz">Elegir voz</h2>
+      <button id="btn-cerrar-dialogo-voz" class="btn btn-fantasma btn-icono" type="button" aria-label="Cerrar">✕</button>
+    </div>
+    <label class="campo"><span class="solo-lectores">Buscar voces</span>
+      <input id="buscar-dialogo-voz" class="input" type="search" placeholder="Buscar voces…" aria-label="Buscar voces">
+    </label>
+    <div class="filtros-voz" role="group" aria-label="Filtrar por origen">
+      <button class="chip activo" type="button" data-filtro-voz="">Todas</button>
+      <button class="chip" type="button" data-filtro-voz="fija">Fijas</button>
+      <button class="chip" type="button" data-filtro-voz="clonada">Clonadas</button>
+      <button class="chip" type="button" data-filtro-voz="disenada">Diseñadas</button>
+    </div>
+    <div id="lista-dialogo-voz" class="lista-voces"></div>
+  </div>
+</div>
+
+<!-- Menú Más (móvil) -->
+<div id="menu-mas" class="dialogo-fondo" hidden>
+  <div class="dialogo dialogo-hoja" role="dialog" aria-modal="true" aria-labelledby="titulo-menu-mas">
+    <h2 id="titulo-menu-mas">Más</h2>
+    <a class="nav-item" href="#/voz-a-voz">Voz a voz</a>
+    <a class="nav-item" href="#/efectos">Efectos de sonido</a>
+    <a class="nav-item" href="#/ajustes">Ajustes</a>
+    <button id="btn-cerrar-menu-mas" class="btn btn-secundario" type="button">Cerrar</button>
+  </div>
+</div>
+
+<!-- Confirmación genérica -->
+<div id="dialogo-confirmar" class="dialogo-fondo" hidden>
+  <div class="dialogo" role="alertdialog" aria-modal="true" aria-labelledby="titulo-confirmar" aria-describedby="texto-confirmar">
+    <h2 id="titulo-confirmar">Confirmar</h2>
+    <p id="texto-confirmar"></p>
+    <label class="check" id="check-confirmar-wrap" hidden><input id="check-confirmar" type="checkbox" checked> <span id="texto-check-confirmar">Borrar también el audio</span></label>
+    <div class="fila-botones">
+      <button id="btn-confirmar-cancelar" class="btn btn-secundario" type="button">Cancelar</button>
+      <button id="btn-confirmar-aceptar" class="btn btn-peligro" type="button">Borrar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Detalle del backend -->
+<div id="dialogo-backend" class="dialogo-fondo" hidden>
+  <div class="dialogo" role="dialog" aria-modal="true" aria-labelledby="titulo-backend">
+    <div class="dialogo-cabecera">
+      <h2 id="titulo-backend">Backend</h2>
+      <button id="btn-cerrar-dialogo-backend" class="btn btn-fantasma btn-icono" type="button" aria-label="Cerrar">✕</button>
+    </div>
+    <dl class="detalle">
+      <dt>Estado</dt><dd id="detalle-estado">Sin configurar</dd>
+      <dt>URL</dt><dd id="detalle-url">—</dd>
+      <dt>Latencia del último /health</dt><dd id="detalle-latencia">—</dd>
+      <dt>Modelos cargados</dt><dd id="detalle-modelos">—</dd>
+      <dt>GPU</dt><dd id="detalle-gpu">—</dd>
+    </dl>
+    <a class="btn btn-secundario" href="#/ajustes">Abrir Ajustes</a>
+  </div>
+</div>
+
+<nav class="nav-inferior" aria-label="Navegación inferior">
+  <a class="nav-item" href="#/estudio" data-ruta="estudio">Estudio</a>
+  <a class="nav-item" href="#/voces" data-ruta="voces">Voces</a>
+  <a class="nav-item" href="#/doblaje" data-ruta="doblaje">Doblaje</a>
+  <a class="nav-item" href="#/historial" data-ruta="historial">Historial</a>
+  <a class="nav-item" href="#/ajustes" data-ruta="ajustes">Ajustes</a>
+</nav>
+
+<div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+
+<script src="./js/api.js"></script>
+<script src="./js/store.js"></script>
+<script src="./js/player.js"></script>
+<script src="./js/screens.js"></script>
+<script src="./js/app.js"></script>
+</body>
+</html>
