@@ -76,7 +76,7 @@ Abre `http://localhost:8000/docs` (Swagger) y `http://localhost:8000/health`.
 > mantén pulsado el campo y toca **Pegar**.
 
 1. **Prepara el código una sola vez (desde el ordenador o el teléfono):**
-   sube esta carpeta `backend/` a GitHub en el repo `elevenlabs-clon`
+   sube esta carpeta `backend/` a GitHub en el repo público `autonomouswealth2026-ux/sonora`
    (o súbela como dataset de Kaggle llamado `elevenlabs-backend`).
 2. **En Kaggle, abre el notebook:** sube `kaggle_notebook.ipynb` a Kaggle
    (o ábrelo desde el repo) y toca **Run**.
