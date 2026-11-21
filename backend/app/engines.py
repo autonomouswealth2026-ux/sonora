@@ -420,9 +420,20 @@ class ModelManager:
         try:
             model = WhisperModel(size, device=device, compute_type=compute)
         except Exception as exc:
-            raise ModelUnavailable(
-                f"whisper-{size}", f"No se pudo cargar Whisper: {exc}"
-            )
+            if device == "cuda":
+                # En Kaggle, torch cu130 trae libcublas.so.13 pero
+                # ctranslate2 (faster-whisper) pide libcublas.so.12:
+                # sin esa librería la carga CUDA falla y el doblaje
+                # muere en «transcribe». Caer a CPU (int8) antes que
+                # dejar el doblaje/STT sin servicio.
+                log.warning(
+                    "Whisper CUDA falló (%s); reintentando en CPU.", exc
+                )
+                model = WhisperModel(size, device="cpu", compute_type="int8")
+            else:
+                raise ModelUnavailable(
+                    f"whisper-{size}", f"No se pudo cargar Whisper: {exc}"
+                )
         with self._lock:
             self._loaded[key] = model
         return model
