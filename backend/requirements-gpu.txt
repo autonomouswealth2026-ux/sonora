@@ -6,17 +6,23 @@
 # puede tardar: descomentar solo si hace falta.
 -r requirements.txt
 qwen-tts==0.1.1
-kokoro==0.9.4
+# kokoro 0.7.16: la última con wheel para Python 3.13 (Kaggle usa 3.13.16;
+# 0.8.1-0.9.4 exigen Python <3.13). La API que usa el backend
+# (KPipeline con códigos de una letra + pipe(text, voice, speed)) es la
+# misma en 0.7.x. En CPU (Python 3.12) se sigue usando 0.9.4.
+kokoro==0.7.16
 faster-whisper==1.2.1
-# av FIJADO a 13.1.0: faster-whisper 1.2.1 llama a av.open(...,
-# metadata_errors="ignore") y av>=14 eliminó ese argumento: con
-# av 19.x, /stt, /align y /verify dan 500 (VERIFICACION.md §5-B1).
-av==13.1.0
+# av 15.1.0: 13.1.0 no tiene wheel para Python 3.13. 15.1.0 SÍ acepta
+# metadata_errors="ignore" (verificado 2026-11-20); el que lo elimina es
+# av 19.x (VERIFICACION.md §5-B1 corregido: el umbral NO es 14).
+av==15.1.0
 # qwen-tts==0.1.1 exige transformers>=4.57.3 y accelerate>=1.12.0
 # (verificado en PyPI 2026-11-20): con 4.48.3/1.4.0 pip no resuelve.
 transformers==4.57.3
 accelerate==1.12.0
 diffusers==0.33.1
-demucs==4.0.1
+# demucs 4.1.0: 4.0.1 no tiene wheel para Python 3.13. El backend usa el
+# CLI `python -m demucs --two-stems=vocals`, estable entre 4.0 y 4.1.
+demucs==4.1.0
 sentencepiece==0.2.0
 # flash-attn==2.7.4 --no-build-isolation  # opcional, compilación lenta

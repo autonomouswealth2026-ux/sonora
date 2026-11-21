@@ -210,8 +210,11 @@ SFX 60 s → `less_than_equal`. `normalize_text("¡Hola, Valdés! ¿Cómo estás
   with av.open(input_file, mode="r", metadata_errors="ignore") ...
   TypeError: open() got an unexpected keyword argument 'metadata_errors'`
 - **Causa:** `pip install faster-whisper==1.2.1` arrastra `av` 19.0.2; faster-whisper
-  1.2.1 solo funciona con `av<14`. Es la lección ya registrada en `AGENTS.md`
-  (2026-10-19: fijar `av` 13.1.0; el venv `whisper` lo tiene).
+  1.2.1 solo funciona con `av` que acepte `metadata_errors="ignore"`.
+  **CORRECCIÓN 2026-11-20:** el umbral NO es 14 — `av==15.1.0` SÍ acepta ese
+  argumento (verificado con `av.open(..., metadata_errors="ignore")`); el que
+  lo elimina es `av` 19.x. En Python 3.13 (Kaggle) `av==13.1.0` no tiene wheel
+  y hay que usar `av==15.1.0` (ver `requirements-gpu.txt`).
 - **Verificación de la corrección:** con `av==13.1.0` en el venv `sonora`,
   `/verify` → 200, WER 0,125, y `/stt` y `/align` funcionan.
 - **Acción requerida:** añadir `av==13.1.0` (o `av<14`) a `requirements-cpu.txt`
